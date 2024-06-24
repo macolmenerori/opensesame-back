@@ -7,7 +7,8 @@ import {
   protect,
   restrictTo,
   signUp,
-  testEnd
+  testEnd,
+  updatePermissions
 } from '../controllers/authController';
 
 const router = express.Router();
@@ -17,5 +18,6 @@ router.route('/test').get(protect, restrictTo(['admin']), testEnd); // TODO: rem
 router.route('/login').post(logIn);
 router.route('/logout').delete(logOut);
 router.route('/roles').get(protect, restrictTo(['admin']), getRoles);
+router.route('/permissions').put(protect, restrictTo(['admin']), updatePermissions);
 
 export default router;
