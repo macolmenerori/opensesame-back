@@ -8,6 +8,7 @@ module.exports = {
     'consistent-return': 'off',
     'func-names': 'off',
     'object-shorthand': 'off',
+    'object-destructuring': 'off',
     'no-process-exit': 'off',
     'no-param-reassign': 'off',
     'no-return-await': 'off',

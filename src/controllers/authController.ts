@@ -137,6 +137,55 @@ export const logOut = (req: Request, res: Response) => {
   return res.status(200).json({ status: 'success', message: 'Successfully logged out.' });
 };
 
+export const getRoles = async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email
+  let role: UserRoles | undefined = undefined;
+  if (!id) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that email.'
+      });
+    }
+    role = user?.role;
+  } else {
+    const user = await User.findOne({ id });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that id.'
+      });
+    }
+    role = user?.role;
+  }
+
+  if (!role) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Role not found for that user.'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Roles retrieved',
+    data: {
+      role
+    }
+  });
+};
+
 // TODO: remove this
 export const testEnd = (req: Request, res: Response) => {
   res.status(200).json({
