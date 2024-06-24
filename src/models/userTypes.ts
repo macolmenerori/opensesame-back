@@ -7,6 +7,7 @@ export type UserType = Document & {
   name: string;
   email: string;
   role: UserRoles;
+  permissions: string[];
   password: string;
   passwordConfirm: string;
   passwordChangedAt?: Date;

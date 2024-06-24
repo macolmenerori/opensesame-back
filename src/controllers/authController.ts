@@ -83,7 +83,7 @@ const signAndSendToken = (
   }
 };
 
-export const signUp = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const signUp = catchAsync(async (req: Request, res: Response) => {
   // Create user
   const newUser = await User.create(req.body);
 
@@ -99,7 +99,7 @@ export const signUp = catchAsync(async (req: Request, res: Response, next: NextF
   });
 });
 
-export const logIn = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const logIn = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   // 1) Check if email and password exist
@@ -136,6 +136,166 @@ export const logOut = (req: Request, res: Response) => {
 
   return res.status(200).json({ status: 'success', message: 'Successfully logged out.' });
 };
+
+export const getRoles = catchAsync(async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email
+  let role: UserRoles | undefined = undefined;
+  if (!id) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that email.'
+      });
+    }
+    role = user?.role;
+  } else {
+    const user = await User.findOne({ id });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that id.'
+      });
+    }
+    role = user?.role;
+  }
+
+  if (!role) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Role not found for that user.'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Roles retrieved',
+    data: {
+      role
+    }
+  });
+});
+
+export const updatePermissions = catchAsync(async (req: Request, res: Response) => {
+  const { email, id, permissions } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  if (!permissions) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide permissions'
+    });
+  }
+
+  // Search by email
+  let user: UserSchemaType | null = null;
+  if (!id) {
+    user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that email.'
+      });
+    }
+  } else {
+    user = await User.findOne({ id });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that id.'
+      });
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(user.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+
+  if (!updatedUser) {
+    return res.status(500).json({
+      status: 'fail',
+      message: 'Could not update user'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Permissions updated',
+    data: {
+      user: updatedUser
+    }
+  });
+});
+
+export const getPermissions = catchAsync(async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email
+  let permissions: string[] | undefined = undefined;
+  if (!id) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that email.'
+      });
+    }
+    permissions = user?.permissions;
+  } else {
+    const user = await User.findOne({ id });
+    if (!user) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found with that id.'
+      });
+    }
+    permissions = user?.permissions;
+  }
+
+  if (!permissions || permissions.length === 0) {
+    return res.status(200).json({
+      status: 'success',
+      message: 'This user does not have permissions.',
+      data: {
+        permissions: []
+      }
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Permissions retrieved',
+    data: {
+      permissions
+    }
+  });
+});
 
 // TODO: remove this
 export const testEnd = (req: Request, res: Response) => {
