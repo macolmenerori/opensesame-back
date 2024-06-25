@@ -70,6 +70,7 @@ const signAndSendToken = (
           user
         }
       });
+      return;
     }
     case 'bearer': {
       res.status(statusCode).json({
@@ -79,6 +80,7 @@ const signAndSendToken = (
           user
         }
       });
+      return;
     }
   }
 };
