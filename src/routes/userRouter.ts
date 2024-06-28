@@ -6,6 +6,7 @@ import {
   logIn,
   logOut,
   protect,
+  removeUser,
   restrictTo,
   signUp,
   testEnd,
@@ -27,5 +28,6 @@ router
   .route('/permissions')
   .get(protect, getPermissions)
   .put(protect, restrictTo(['admin']), updatePermissions);
+router.route('/delete').delete(protect, restrictTo(['admin']), removeUser);
 
 export default router;

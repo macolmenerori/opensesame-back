@@ -349,6 +349,41 @@ export const updateRoles = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const removeUser = catchAsync(async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email or id
+  const user = (await getUserByEmailOrId(
+    !email ? 'id' : 'email',
+    email,
+    id,
+    res
+  )) as UserSchemaType;
+
+  // Remove user
+  const removed = await User.findByIdAndDelete(user.id);
+
+  if (!removed) {
+    return res.status(500).json({
+      status: 'fail',
+      message: 'Could not remove user'
+    });
+  }
+
+  return res.status(204).json({
+    status: 'success',
+    message: 'User removed'
+  });
+});
+
 // TODO: remove this
 export const testEnd = (req: Request, res: Response) => {
   res.status(200).json({
