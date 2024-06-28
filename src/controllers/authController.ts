@@ -384,6 +384,77 @@ export const removeUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const changePassword = catchAsync(async (req: Request, res: Response) => {
+  // Get the logged in user
+  const user = (await User.findById(req.user?.id).select('+password')) as UserSchemaType;
+
+  // Check if the current password is correct
+  if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
+    return res.status(401).json({
+      status: 'fail',
+      message: 'Your current password is wrong'
+    });
+  }
+
+  // Check if password and passwordConfirm are the same
+  if (req.body.newPassword !== req.body.newPasswordConfirm) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Passwords are not the same'
+    });
+  }
+
+  // Update password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.newPasswordConfirm;
+  await user.save();
+
+  // Update user JWT
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    signAndSendToken(user, 200, 'bearer', req, res);
+  } else {
+    signAndSendToken(user, 200, 'cookie', req, res);
+  }
+});
+
+export const changeUserPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email or id
+  const user = (await getUserByEmailOrId(
+    !email ? 'id' : 'email',
+    email,
+    id,
+    res
+  )) as UserSchemaType;
+
+  // Check if password and passwordConfirm are the same
+  if (req.body.newPassword !== req.body.newPasswordConfirm) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Passwords are not the same'
+    });
+  }
+
+  // Update password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.newPasswordConfirm;
+  await user.save();
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Password updated'
+  });
+});
+
 // TODO: remove this
 export const testEnd = (req: Request, res: Response) => {
   res.status(200).json({

@@ -1,6 +1,8 @@
 import express from 'express';
 
 import {
+  changePassword,
+  changeUserPassword,
   getPermissions,
   getRoles,
   logIn,
@@ -20,6 +22,8 @@ router.route('/signup').post(protect, restrictTo(['admin']), signUp);
 router.route('/test').get(protect, restrictTo(['admin']), testEnd); // TODO: remove
 router.route('/login').post(logIn);
 router.route('/logout').delete(logOut);
+router.route('/changePassword').post(protect, changePassword);
+router.route('/changeUserPassword').post(protect, restrictTo(['admin']), changeUserPassword);
 router
   .route('/roles')
   .get(protect, getRoles)
