@@ -49,40 +49,34 @@ const signAndSendToken = (
 ) => {
   const token = signToken(user._id as string);
 
-  switch (tokenType) {
-    case 'cookie': {
-      // Set cookie for browser
-      const cookieOptions: CookieOptionsType = {
-        expires: new Date(
-          Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRES_IN!) * 24 * 60 * 60 * 1000
-        ),
-        httpOnly: true
-      };
+  if (tokenType === 'cookie') {
+    // Set cookie for browser
+    const cookieOptions: CookieOptionsType = {
+      expires: new Date(
+        Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRES_IN!) * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true
+    };
 
-      if (req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
+    if (req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
 
-      res.cookie('jwt', token, cookieOptions);
-
-      res.status(statusCode).json({
-        status: 'success',
-        token,
-        data: {
-          user
-        }
-      });
-      return;
-    }
-    case 'bearer': {
-      res.status(statusCode).json({
-        status: 'success',
-        token,
-        data: {
-          user
-        }
-      });
-      return;
-    }
+    res.cookie('jwt', token, cookieOptions);
   }
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        permissions: user.permissions
+      }
+    }
+  });
+  return;
 };
 
 const getUserByEmailOrId = async (
