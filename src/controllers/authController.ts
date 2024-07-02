@@ -1,4 +1,5 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { JwtPayload, sign, verify, VerifyOptions } from 'jsonwebtoken';
 import { promisify } from 'util';
 
@@ -112,6 +113,14 @@ const getUserByEmailOrId = async (
 };
 
 export const signUp = catchAsync(async (req: Request, res: Response) => {
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
   // Create user
   const newUser = await User.create(req.body);
 

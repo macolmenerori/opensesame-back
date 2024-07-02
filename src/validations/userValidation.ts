@@ -1,0 +1,50 @@
+import { body, ValidationChain } from 'express-validator';
+
+export const signUpValidation: ValidationChain[] = [
+  body('name')
+    .exists({ checkFalsy: true })
+    .withMessage('Name cannot be empty')
+    .bail()
+    .isString()
+    .withMessage('Name must be a string')
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Name must be between 2 and 50 characters'),
+  body('email')
+    .exists({ checkFalsy: true })
+    .withMessage('Email cannot be empty')
+    .bail()
+    .isEmail()
+    .withMessage('Email must be valid'),
+  body('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Password cannot be empty')
+    .bail()
+    .isString()
+    .withMessage('Password must be a string')
+    .bail()
+    .isLength({ min: 8, max: 100 })
+    .withMessage('Password must be at least 8 characters'),
+  body('passwordConfirm')
+    .exists({ checkFalsy: true })
+    .withMessage('Password cannot be empty')
+    .bail()
+    .isString()
+    .withMessage('Password must be a string')
+    .bail()
+    .isLength({ min: 8, max: 100 })
+    .withMessage('Password must be at least 8 characters'),
+  body('role')
+    .exists({ checkFalsy: true })
+    .withMessage('Role cannot be empty')
+    .bail()
+    .isString()
+    .withMessage('Role must be a string')
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Role must be between 2 and 50 characters'),
+  body('permissions')
+    .optional()
+    .isString()
+    .withMessage('Permissions is optional, but if declared it must be a string')
+];

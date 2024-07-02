@@ -15,10 +15,11 @@ import {
   updatePermissions,
   updateRoles
 } from '../controllers/authController';
+import { signUpValidation } from '../validations/userValidation';
 
 const router = express.Router();
 
-router.route('/signup').post(protect, restrictTo(['admin']), signUp);
+router.route('/signup').post(protect, restrictTo(['admin']), signUpValidation, signUp);
 router.route('/test').get(protect, restrictTo(['admin']), testEnd); // TODO: remove
 router.route('/login').post(logIn);
 router.route('/logout').delete(logOut);
