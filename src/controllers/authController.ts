@@ -1,4 +1,5 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { JwtPayload, sign, verify, VerifyOptions } from 'jsonwebtoken';
 import { promisify } from 'util';
 
@@ -111,7 +112,20 @@ const getUserByEmailOrId = async (
   }
 };
 
+const checkValidation = (req: Request, res: Response) => {
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
+};
+
 export const signUp = catchAsync(async (req: Request, res: Response) => {
+  checkValidation(req, res);
+
   // Create user
   const newUser = await User.create(req.body);
 
@@ -129,6 +143,8 @@ export const signUp = catchAsync(async (req: Request, res: Response) => {
 
 export const logIn = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
+  checkValidation(req, res);
 
   // 1) Check if email and password exist
   if (!email || !password) {
@@ -168,6 +184,8 @@ export const logOut = (req: Request, res: Response) => {
 export const getRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
+  checkValidation(req, res);
+
   // Check that at least one exists
   if (!email && !id) {
     return res.status(400).json({
@@ -203,6 +221,8 @@ export const getRoles = catchAsync(async (req: Request, res: Response) => {
 
 export const updatePermissions = catchAsync(async (req: Request, res: Response) => {
   const { email, id, permissions } = req.body;
+
+  checkValidation(req, res);
 
   // Check that at least one exists
   if (!email && !id) {
@@ -251,6 +271,8 @@ export const updatePermissions = catchAsync(async (req: Request, res: Response) 
 export const getPermissions = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
+  checkValidation(req, res);
+
   // Check that at least one exists
   if (!email && !id) {
     return res.status(400).json({
@@ -289,6 +311,8 @@ export const getPermissions = catchAsync(async (req: Request, res: Response) => 
 
 export const updateRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id, role } = req.body;
+
+  checkValidation(req, res);
 
   // Check that at least one exists
   if (!email && !id) {
@@ -346,6 +370,8 @@ export const updateRoles = catchAsync(async (req: Request, res: Response) => {
 export const removeUser = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
+  checkValidation(req, res);
+
   // Check that at least one exists
   if (!email && !id) {
     return res.status(400).json({
@@ -379,6 +405,8 @@ export const removeUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const changePassword = catchAsync(async (req: Request, res: Response) => {
+  checkValidation(req, res);
+
   // Get the logged in user
   const user = (await User.findById(req.user?.id).select('+password')) as UserSchemaType;
 
@@ -413,6 +441,8 @@ export const changePassword = catchAsync(async (req: Request, res: Response) => 
 
 export const changeUserPassword = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
+
+  checkValidation(req, res);
 
   // Check that at least one exists
   if (!email && !id) {
