@@ -121,6 +121,7 @@ export const signUp = catchAsync(async (req: Request, res: Response) => {
       errors: validationRes.array()
     });
   }
+
   // Create user
   const newUser = await User.create(req.body);
 
@@ -138,6 +139,15 @@ export const signUp = catchAsync(async (req: Request, res: Response) => {
 
 export const logIn = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
 
   // 1) Check if email and password exist
   if (!email || !password) {
@@ -177,6 +187,15 @@ export const logOut = (req: Request, res: Response) => {
 export const getRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
+
   // Check that at least one exists
   if (!email && !id) {
     return res.status(400).json({
@@ -212,6 +231,15 @@ export const getRoles = catchAsync(async (req: Request, res: Response) => {
 
 export const updatePermissions = catchAsync(async (req: Request, res: Response) => {
   const { email, id, permissions } = req.body;
+
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -260,6 +288,15 @@ export const updatePermissions = catchAsync(async (req: Request, res: Response) 
 export const getPermissions = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
+
   // Check that at least one exists
   if (!email && !id) {
     return res.status(400).json({
@@ -298,6 +335,15 @@ export const getPermissions = catchAsync(async (req: Request, res: Response) => 
 
 export const updateRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id, role } = req.body;
+
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -388,6 +434,15 @@ export const removeUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const validationRes = validationResult(req);
+  if (!validationRes.isEmpty()) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Invalid input data',
+      errors: validationRes.array()
+    });
+  }
+
   // Get the logged in user
   const user = (await User.findById(req.user?.id).select('+password')) as UserSchemaType;
 
