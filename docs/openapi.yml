@@ -1,0 +1,120 @@
+openapi: '3.0.3'
+info:
+  title: opensesame-back API
+  version: '0.1.0'
+  description: TODO
+servers:
+  - url: http://localhost:3000/api/v1
+tags:
+  - name: users
+    description: Operations about user
+paths:
+  /users/signup:
+    post:
+      tags:
+        - users
+      summary: Create user
+      description: This can only be done by logged in admins
+      operationId: createUser
+      requestBody:
+        description: New user object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John
+                email:
+                  type: string
+                  example: john@mydomain.com
+                role:
+                  type: string
+                  example: user
+                password:
+                  type: string
+                  example: superSecurePassword
+                passwordConfirm:
+                  type: string
+                  example: superSecurePassword
+      responses:
+        201:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User created
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            example: John
+                          email:
+                            type: string
+                            example: john@mydomain.com
+                          role:
+                            type: string
+                            example: user
+                          permissions:
+                            type: array
+                            items:
+                              type: string
+                              example: role1
+                          password:
+                            type: string
+                            example: n5LAnr1jM.DyKcV8
+                          passwordChangedAt:
+                            type: string
+                            example: 2024-07-08T17:04:33.270Z
+                          _id:
+                            type: string
+                            example: c1c22b5556321
+                          __v:
+                            type: integer
+                            example: 0
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Invalid input data
+                  errors:
+                    type: object
+                    properties:
+                      errors:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: field
+                          value:
+                            type: string
+                            example: user@
+                          msg:
+                            type: string
+                            example: Email must be valid
+                          path:
+                            type: string
+                            example: email
+                          location:
+                            type: string
+                            example: body
