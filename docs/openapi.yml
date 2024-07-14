@@ -21,23 +21,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: John
-                email:
-                  type: string
-                  example: john@mydomain.com
-                role:
-                  type: string
-                  example: user
-                password:
-                  type: string
-                  example: superSecurePassword
-                passwordConfirm:
-                  type: string
-                  example: superSecurePassword
+              $ref: '#/components/schemas/SignUp'
       responses:
         201:
           description: Successful operation
@@ -118,3 +102,274 @@ paths:
                           location:
                             type: string
                             example: body
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Login user
+      parameters:
+        - in: header
+          name: authorizationType
+          schema:
+            type: string
+            example: bearer
+          required: false
+          description: If "bearer" is provided, the token will be sent in the Authorization header. If not provided, the token will be stored in a cookie.
+      description: User login endpoint
+      operationId: loginUser
+      requestBody:
+        description: User login object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogIn'
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObject'
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Invalid credentials
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: Logout user
+      description: Destroys user session. No parameters as token is retrieved from cookies.
+      operationId: logoutUser
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfully logged out
+  /users/changePassword:
+    post:
+      description: Change user password
+      summary: Change user password
+      tags:
+        - users
+      operationId: changePassword
+      parameters:
+        - in: header
+          name: authorizationType
+          schema:
+            type: string
+            example: bearer
+          required: false
+          description: If "bearer" is provided, the token will be sent in the Authorization header. If not provided, the token will be stored in a cookie.
+      requestBody:
+        description: Change password object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+      responses:
+        200:
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObject'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Passwords are not the same
+        401:
+          description: Not logged in or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+  /users/changeUserPassword:
+    post:
+      tags:
+        - users
+      summary: Change user password
+      description: Change the password of another user. This can only be done by admins.
+      operationId: changeUserPassword
+      requestBody:
+        description: Change user password object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassword'
+      responses:
+        200:
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Password updated
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Passwords are not the same
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+
+components:
+  schemas:
+    NotLoggedIn:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        message:
+          type: string
+          example: You are not logged in! Please log in to get access.
+    Unauthorized:
+      type: object
+      properties:
+        status:
+          type: string
+          example: fail
+        message:
+          type: string
+          example: You do not have permission to perform this action
+    SignUp:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John
+        email:
+          type: string
+          example: john@mydomain.com
+        role:
+          type: string
+          example: user
+        password:
+          type: string
+          example: superSecurePassword
+        passwordConfirm:
+          type: string
+          example: superSecurePassword
+    LogIn:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@user.com
+        password:
+          type: string
+          example: superSecurePassword
+    ChangePassword:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+          example: superSecurePassword
+        newPassword:
+          type: string
+          example: superSecurePassword2
+        newPasswordConfirm:
+          type: string
+          example: superSecurePassword2
+    LoginObject:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZjI2MzQ2ZjIzYzQzNzIzYzQzNzIzYzQiLCJpYXQiOjE1OTk4NzQwNzJ9.7
+        data:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 5f26346f23c43723c43723c4
+                name:
+                  type: string
+                  example: John
+                email:
+                  type: string
+                  example: user@user.com
+                role:
+                  type: string
+                  example: user
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                    example: role1
