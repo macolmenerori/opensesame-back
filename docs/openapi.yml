@@ -13,6 +13,9 @@ paths:
     post:
       tags:
         - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
       summary: Create user
       description: This can only be done by logged in admins
       operationId: createUser
@@ -118,6 +121,9 @@ paths:
     post:
       tags:
         - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
       summary: Login user
       parameters:
         - in: header
@@ -182,6 +188,9 @@ paths:
       summary: Change user password
       tags:
         - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
       operationId: changePassword
       parameters:
         - in: header
@@ -233,6 +242,9 @@ paths:
     post:
       tags:
         - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
       summary: Change user password
       description: Change the password of another user. This can only be done by admins.
       operationId: changeUserPassword
@@ -269,6 +281,261 @@ paths:
                   message:
                     type: string
                     example: Passwords are not the same
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+  /users/roles:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Get all roles of a user
+      description: Get all roles of a user
+      operationId: getRoles
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Roles retrieved
+                  data:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        example: user
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: Roles not found for that user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Role not found for that user
+    put:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Update user roles
+      description: Update user roles
+      operationId: updateRoles
+      requestBody:
+        description: Update roles object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@user.com
+                role:
+                  type: string
+                  example: admin
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObject'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Invalid input data
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+  /users/permissions:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Get all permissions of a user
+      description: Get all permissions of a user
+      operationId: getPermissions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Permissions retrieved
+                  data:
+                    type: object
+                    properties:
+                      permissions:
+                        type: array
+                        items:
+                          type: string
+                          example: role1
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+    put:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Update user permissions
+      description: Update user permissions
+      operationId: updatePermissions
+      requestBody:
+        description: Update permissions object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@user.com
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                    example: role1
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObject'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Invalid input data
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        403:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+  /users/delete:
+    delete:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Delete user
+      description: This can only be done by logged in admins
+      operationId: deleteUser
+      requestBody:
+        description: Delete user object
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@user.com
+      responses:
+        204:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User removed
         401:
           description: Not logged in
           content:
@@ -373,3 +640,12 @@ components:
                   items:
                     type: string
                     example: role1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwt
