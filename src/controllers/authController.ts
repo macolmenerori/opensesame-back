@@ -21,6 +21,12 @@ type DecodedJwt = JwtPayload & {
   id: string;
 };
 
+/**
+ * Securely signs a token
+ *
+ * @param {string} id - The user ID
+ * @returns {string} - The signed token
+ */
 const signToken = (id: string): string => {
   return sign({ id: id }, process.env.JWT_SECRET!, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -32,6 +38,12 @@ const verifyAsync = promisify<string, string | Buffer, VerifyOptions | undefined
   verify
 );
 
+/**
+ * Verifies and decodes a token
+ *
+ * @param {string} token - The token to verify
+ * @returns {Promise<DecodedJwt | null>} - The decoded token, or null if the token is invalid
+ */
 const verifyToken = async (token: string): Promise<DecodedJwt | null> => {
   try {
     const decoded = (await verifyAsync(token, process.env.JWT_SECRET as string, {})) as DecodedJwt;
@@ -41,6 +53,15 @@ const verifyToken = async (token: string): Promise<DecodedJwt | null> => {
   }
 };
 
+/**
+ * Signs a token and sends it back to the client
+ *
+ * @param {UserType} user - The user object to sign the token for
+ * @param {number} statusCode - The status code to return
+ * @param {'cookie' | 'bearer'} tokenType - The type of token to send, bearer or cookie
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
 const signAndSendToken = (
   user: UserType,
   statusCode: number,
@@ -80,6 +101,15 @@ const signAndSendToken = (
   return;
 };
 
+/**
+ * Retrieves from the database a user by its email or ID
+ *
+ * @param {string} type - The type of search, email or ID
+ * @param {string} email - The email to search for
+ * @param {string} id - The ID to search for
+ * @param {Response} res - The response object
+ * @returns {Promise<UserSchemaType | Response>} - The user object, or a response object if the user is not found
+ */
 const getUserByEmailOrId = async (
   type: 'email' | 'id',
   email: string,
@@ -112,6 +142,12 @@ const getUserByEmailOrId = async (
   }
 };
 
+/**
+ * Checks if the validation has errors and sends a response if it does
+ *
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
+ */
 const checkValidation = (req: Request, res: Response) => {
   const validationRes = validationResult(req);
   if (!validationRes.isEmpty()) {
