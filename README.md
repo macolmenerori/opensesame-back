@@ -16,7 +16,18 @@ The API documentation can be found in openAPI format under `docs/openapi.yml`
 
 ## How to set up and run (Docker, easy)
 
-[TBD]
+1. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
+2. Generate the Docker image
+
+```
+docker build -t opensesame-back:latest .
+```
+
+3. Run the Docker image
+
+```
+docker run --name opensesame-back opensesame-back
+```
 
 ## How to set up and run (Native)
 

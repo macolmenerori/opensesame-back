@@ -4,7 +4,7 @@ info:
   version: '0.1.0'
   description: TODO
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: http://localhost:8080/api/v1
 tags:
   - name: users
     description: Operations about user
