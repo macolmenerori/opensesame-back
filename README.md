@@ -16,7 +16,18 @@ The API documentation can be found in openAPI format under `docs/openapi.yml`
 
 ## How to set up and run (Docker, easy)
 
-[TBD]
+1. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
+2. Generate the Docker image
+
+```
+docker build -t opensesame-back:latest .
+```
+
+3. Run the Docker image
+
+```
+docker run --name opensesame-back opensesame-back
+```
 
 ## How to set up and run (Native)
 
@@ -27,7 +38,7 @@ The API documentation can be found in openAPI format under `docs/openapi.yml`
 ```
 NODE_ENV=production # The environment, leave production for usage
 
-PORT=3000 # Port in which the API will run
+PORT=8080 # Port in which the API will run
 DB_NAME=opensesame # Name of the database
 DATABASE=mongo_string # mongoDB database connection string
 
