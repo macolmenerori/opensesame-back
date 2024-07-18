@@ -1,0 +1,5 @@
+#!/bin/sh
+
+docker pull zricethezav/gitleaks:latest
+docker run --name gitleaks-opensesame-back -v $(pwd):/service zricethezav/gitleaks protect --verbose --redact --staged --source=/service
+docker rm gitleaks-opensesame-back

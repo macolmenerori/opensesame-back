@@ -11,7 +11,8 @@
     "lint": "eslint --fix .",
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build"
+    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build",
+    "gitleaks": "sh scripts/gitleaks"
   },
   "author": "macolmenerori",
   "license": "ISC",
@@ -53,6 +54,7 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-simple-import-sort": "^12.1.0",
+    "husky": "^9.1.1",
     "nodemon": "^3.1.3",
     "prettier": "^3.3.1",
     "ts-node": "^10.9.2",
