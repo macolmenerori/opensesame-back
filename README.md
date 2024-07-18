@@ -38,7 +38,7 @@ docker run --name opensesame-back opensesame-back
 ```
 NODE_ENV=production # The environment, leave production for usage
 
-PORT=3000 # Port in which the API will run
+PORT=8080 # Port in which the API will run
 DB_NAME=opensesame # Name of the database
 DATABASE=mongo_string # mongoDB database connection string
 
