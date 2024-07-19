@@ -36,9 +36,11 @@ app.use(mongoSanitize());
 // Compress responses
 app.use(compression());
 
-// TODO: Delete this
-app.get('/', (req, res) => {
-  res.send('Hello from opensesame!');
+app.get('/healthcheck', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Server is running'
+  });
 });
 
 app.use('/api/v1/users', userRouter);

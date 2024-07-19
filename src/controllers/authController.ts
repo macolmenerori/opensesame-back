@@ -515,14 +515,6 @@ export const changeUserPassword = catchAsync(async (req: Request, res: Response)
   });
 });
 
-// TODO: remove this
-export const testEnd = (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'You are tested'
-  });
-};
-
 // Restrict access to authenticated users, no matter the role
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there
