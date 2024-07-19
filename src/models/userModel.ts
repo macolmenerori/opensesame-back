@@ -88,14 +88,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp: string): boole
   return false;
 };
 
-// Method to create a password reset token
-userSchema.methods.createPasswordResetToken = function (): string {
-  const resetToken = randomBytes(32).toString('hex'); // Generate a random token
-  this.passwordResetToken = createHash('sha256').update(resetToken).digest('hex'); // Encrypt the token and save it to the database
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // Set the expiration time to 10 minutes
-  return resetToken; // Return the unencrypted token to send it via email
-};
-
 const User = mongoose.model<UserType>('User', userSchema);
 
 export default User;
