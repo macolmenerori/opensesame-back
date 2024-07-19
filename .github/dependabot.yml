@@ -4,9 +4,13 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
-      commit-message:
-        prefix: 'fix'
-        prefix-development: 'chore'
-        include: 'scope'
-      labels:
-        - 'dependencies'
+      day: 'tuesday'
+      time: '08:00'
+      timezone: 'Europe/Madrid'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'fix'
+      prefix-development: 'chore'
+      include: 'scope'
+    labels:
+      - 'dependencies'
