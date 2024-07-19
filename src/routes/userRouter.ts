@@ -11,7 +11,6 @@ import {
   removeUser,
   restrictTo,
   signUp,
-  testEnd,
   updatePermissions,
   updateRoles
 } from '../controllers/authController';
@@ -32,10 +31,6 @@ router
   .route('/signup')
   .post(protect, restrictTo(['admin']), signUpValidation, signUp)
   .all(methodNotAllowed(['POST']));
-router
-  .route('/test')
-  .get(protect, restrictTo(['admin']), testEnd)
-  .all(methodNotAllowed(['GET'])); // TODO: remove
 router
   .route('/login')
   .post(logInValidation, logIn)
