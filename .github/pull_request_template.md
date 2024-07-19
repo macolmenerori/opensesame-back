@@ -13,3 +13,9 @@
 ### Breaking changes
 
 [comment]: Explain the breaking changes and how to fix them.
+
+### Checklist
+
+- [ ] I've tested locally the changes
+- [ ] I've run `yarn verify` to perform basic checks and lints
+- [ ] I've run `gitleaks` to check for hardcoded secrets and tokens
