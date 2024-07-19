@@ -19,5 +19,4 @@ export type UserSchemaType = UserType &
   Schema & {
     correctPassword: (candidatePassword: string, userPassword: string) => Promise<boolean>;
     changedPasswordAfter: (JWTTimestamp: string) => boolean;
-    createPasswordResetToken: () => string;
   };
