@@ -24,4 +24,4 @@ jobs:
           node-version: '20.15.1'
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: echo "The port is ${{ vars.PORT }} for the ${{ vars.DB_NAME}}. ENV is $NODE_ENV and username is $DB_NAME"
+      - run: echo "The port is ${{ vars.PORT }} for the ${{ vars.DB_NAME}}. ENV is ${{ env.NODE_ENV }} and username is $DB_NAME"
