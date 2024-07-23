@@ -1,0 +1,35 @@
+name: Build and Test
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+env:
+  NODE_ENV: ${{ vars.NODE_ENV }}
+  PORT: ${{ vars.PORT }}
+  DB_NAME: ${{ vars.DB_NAME }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  PASSWORD_HASH_DIFFICULTY: ${{ vars.PASSWORD_HASH_DIFFICULTY }}
+  DATABASE: ${{ secrets.DATABASE }}
+  JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
+  JWT_COOKIE_EXPIRES_IN: ${{ vars.JWT_COOKIE_EXPIRES_IN }}
+  RATELIMIT_MAXCONNECTIONS: ${{ vars.RATELIMIT_MAXCONNECTIONS }}
+  RATELIMIT_WINDOWMS: ${{ vars.RATELIMIT_WINDOWMS }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.15.1'
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - run: yarn start > /dev/null 2>&1 &
+      - run: sleep 10
+      - run: curl http://localhost:${{ env.PORT }}/healthcheck | grep running
