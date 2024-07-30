@@ -1,5 +1,4 @@
 import { compare, hash } from 'bcrypt';
-import { createHash, randomBytes } from 'crypto';
 import mongoose, { Schema } from 'mongoose';
 import { isEmail } from 'validator';
 
