@@ -209,10 +209,14 @@ export const logIn = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const logOut = (req: Request, res: Response) => {
-  res.cookie('jwt', 'loggedout', {
+  const cookieOptions: CookieOptionsType = {
     expires: new Date(Date.now() + 10 * 1000), // 10 seconds
     httpOnly: true
-  });
+  };
+
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
+
+  res.cookie('jwt', 'loggedout', cookieOptions);
 
   return res.status(200).json({ status: 'success', message: 'Successfully logged out.' });
 };

@@ -1,11 +1,16 @@
+/* eslint-disable no-console */
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
+import checkEnvVars from './utils/checkEnvVars';
 import app from './app';
 
 dotenv.config({ path: './config.env' });
 
-// TODO: check here that all env.vars are set
+// Check that all env vars are set up
+if (checkEnvVars()) {
+  process.exit(1);
+}
 
 process.on('uncaughtException', (err: Error) => {
   console.log(err.name, err.message);
