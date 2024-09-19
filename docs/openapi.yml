@@ -182,6 +182,26 @@ paths:
                   message:
                     type: string
                     example: Successfully logged out
+  /users/isloggedin:
+    get:
+      tags:
+        - users
+      summary: Check if user is logged in
+      description: Check if user is logged in
+      operationId: isLoggedIn
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginObject'
+        401:
+          description: Not logged in or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
   /users/changePassword:
     post:
       description: Change user password

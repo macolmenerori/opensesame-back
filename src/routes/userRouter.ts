@@ -5,6 +5,7 @@ import {
   changeUserPassword,
   getPermissions,
   getRoles,
+  isLoggedIn,
   logIn,
   logOut,
   protect,
@@ -39,6 +40,10 @@ router
   .route('/logout')
   .delete(logOut)
   .all(methodNotAllowed(['DELETE']));
+router
+  .route('/isloggedin')
+  .get(protect, isLoggedIn)
+  .all(methodNotAllowed(['GET']));
 router
   .route('/changePassword')
   .post(protect, changePasswordValidation, changePassword)

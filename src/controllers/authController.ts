@@ -221,6 +221,12 @@ export const logOut = (req: Request, res: Response) => {
   return res.status(200).json({ status: 'success', message: 'Successfully logged out.' });
 };
 
+export const isLoggedIn = catchAsync(async (req: Request, res: Response) => {
+  const { user } = req;
+
+  return res.status(200).json({ status: 'success', message: 'User is logged in', data: { user } });
+});
+
 export const getRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
