@@ -35,7 +35,7 @@ docker build -t opensesame-back:latest .
 3. Run the Docker image
 
 ```
-docker run --name opensesame-back opensesame-back
+docker run -p 8080:8080 --name opensesame-back opensesame-back
 ```
 
 ## How to set up and run (Native)
@@ -70,4 +70,5 @@ JWT_COOKIE_EXPIRES_IN=7 # The life of the issued cookie. 7 days in this example
 
 RATELIMIT_MAXCONNECTIONS=100 # Only allow 100 requests from the same IP
 RATELIMIT_WINDOWMS=3600000 # Those previous 100 requests must have been in 1 hour
+CORS_WHITELIST=http://localhost:3000,http://mydomain.net # Allowed domains by CORS, comma separated
 ```

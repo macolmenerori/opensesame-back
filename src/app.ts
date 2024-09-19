@@ -1,5 +1,6 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
 import { rateLimit } from 'express-rate-limit';
@@ -8,6 +9,29 @@ import helmet from 'helmet';
 import userRouter from './routes/userRouter';
 
 const app = express();
+
+// CORS
+const cors_whitelist = process.env.CORS_WHITELIST ? process.env.CORS_WHITELIST.split(',') : [];
+const corsOptions = {
+  origin: function (
+    origin: string | undefined,
+    // eslint-disable-next-line no-unused-vars
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    // Check if the origin is in the whitelist
+    if (cors_whitelist.indexOf(origin!) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow credentials (cookies) to be sent
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests for complex requests (e.g., with credentials)
+app.options('*', cors(corsOptions));
 
 // Add security HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }));
