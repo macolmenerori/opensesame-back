@@ -11,7 +11,8 @@ const checkEnvVars = (): boolean => {
     'JWT_EXPIRES_IN',
     'JWT_COOKIE_EXPIRES_IN',
     'RATELIMIT_MAXCONNECTIONS',
-    'RATELIMIT_WINDOWMS'
+    'RATELIMIT_WINDOWMS',
+    'CORS_WHITELIST'
   ];
 
   const missingEnvVars: string[] = [];
