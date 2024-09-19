@@ -35,7 +35,7 @@ docker build -t opensesame-back:latest .
 3. Run the Docker image
 
 ```
-docker run --name opensesame-back opensesame-back
+docker run -p 8080:8080 --name opensesame-back opensesame-back
 ```
 
 ## How to set up and run (Native)
