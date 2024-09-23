@@ -525,6 +525,32 @@ export const changeUserPassword = catchAsync(async (req: Request, res: Response)
   });
 });
 
+export const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const page = Number(req.query.page) || 1;
+  const perpage = Number(req.query.perpage) || 10;
+
+  // Calculate the number of users to skip
+  const skip = (page - 1) * perpage;
+
+  const users = await User.find().select('name email role permissions').skip(skip).limit(perpage);
+
+  // Count the total number of users for metadata information
+  const totalCount = await User.countDocuments();
+
+  return res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users
+    },
+    pagination: {
+      totalCount,
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / perpage)
+    }
+  });
+});
+
 // Restrict access to authenticated users, no matter the role
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there

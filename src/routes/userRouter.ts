@@ -3,6 +3,7 @@ import express from 'express';
 import {
   changePassword,
   changeUserPassword,
+  getAllUsers,
   getPermissions,
   getRoles,
   isLoggedIn,
@@ -62,6 +63,10 @@ router
   .get(protect, validateEmailOrId, getPermissions)
   .put(protect, restrictTo(['admin']), updatePermissionsValidation, updatePermissions)
   .all(methodNotAllowed(['GET', 'PUT']));
+router
+  .route('/allusers')
+  .get(protect, getAllUsers)
+  .all(methodNotAllowed(['GET']));
 router
   .route('/delete')
   .delete(protect, restrictTo(['admin']), validateEmailOrId, removeUser)
