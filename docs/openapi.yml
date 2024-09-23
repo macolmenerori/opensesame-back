@@ -422,6 +422,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Unauthorized'
+  /users/allusers:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Get all users in the database
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          required: false
+          description: Page number
+        - in: query
+          name: perpage
+          schema:
+            type: integer
+            example: 10
+          required: false
+          description: Number of results per page
+      description: Get all users in the database
+      operationId: getAllUsers
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  results:
+                    type: number
+                    example: Number of users retrieved
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: 5f26346f23c43723c43723c4
+                            name:
+                              type: string
+                              example: John
+                            email:
+                              type: string
+                              example: user@user.com
+                            role:
+                              type: string
+                              example: user
+                            permissions:
+                              type: array
+                              items:
+                                type: string
+                                example: role1
+                  pagination:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: number
+                        example: 100
+                      totalPages:
+                        type: number
+                        example: 10
+                      currentPage:
+                        type: number
+                        example: 1
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
   /users/permissions:
     get:
       tags:
