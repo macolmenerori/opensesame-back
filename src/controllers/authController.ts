@@ -551,6 +551,82 @@ export const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const getUserDetails = catchAsync(async (req: Request, res: Response) => {
+  const { email, id } = req.body;
+
+  checkValidation(req, res);
+
+  // Check that at least one exists
+  if (!email && !id) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide an email or an id'
+    });
+  }
+
+  // Search by email, id or name
+  const user = (await getUserByEmailOrId(
+    !email ? 'id' : 'email',
+    email,
+    id,
+    res
+  )) as UserSchemaType;
+
+  if (!user) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'User not found'
+    });
+  }
+
+  return res.status(200).json({
+    status: 'success',
+    data: {
+      user
+    }
+  });
+});
+
+export const getUserByName = catchAsync(async (req: Request, res: Response) => {
+  const { name } = req.body;
+  const page = Number(req.query.page) || 1;
+  const perpage = Number(req.query.perpage) || 10;
+
+  checkValidation(req, res);
+
+  // Calculate the number of users to skip
+  const skip = (page - 1) * perpage;
+
+  // Use a regular expression for case-insensitive search
+  const nameRegex = new RegExp(name, 'i');
+
+  const users = (await User.find({ name: { $regex: nameRegex } })
+    .skip(skip)
+    .limit(perpage)) as UserSchemaType[];
+
+  const totalCount = await User.countDocuments({ name: { $regex: nameRegex } });
+
+  if (!users) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No users found with that name.'
+    });
+  } else {
+    return res.status(200).json({
+      status: 'success',
+      results: totalCount,
+      data: {
+        users
+      },
+      pagination: {
+        totalCount: totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / perpage)
+      }
+    });
+  }
+});
+
 // Restrict access to authenticated users, no matter the role
 export const protect = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   // 1) Getting token and check if it's there
