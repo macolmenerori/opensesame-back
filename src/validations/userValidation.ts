@@ -126,6 +126,16 @@ export const validateEmailOrId: ValidationChain[] = [
   body('id').optional().isString().withMessage('ID must be a string')
 ];
 
+export const validateName: ValidationChain[] = [
+  body('name')
+    .optional()
+    .isString()
+    .withMessage('Name must be a string')
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage('Name must be between 2 and 50 characters')
+];
+
 export const updateRolesValidation: ValidationChain[] = [
   body('email').optional().isEmail().withMessage('Email must be valid'),
   body('id').optional().isString().withMessage('ID must be a string'),

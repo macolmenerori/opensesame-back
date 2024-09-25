@@ -487,23 +487,160 @@ paths:
                                 type: string
                                 example: role1
                   pagination:
-                    type: object
-                    properties:
-                      totalCount:
-                        type: number
-                        example: 100
-                      totalPages:
-                        type: number
-                        example: 10
-                      currentPage:
-                        type: number
-                        example: 1
+                    $ref: '#/components/schemas/PaginationResultObect'
         401:
           description: Not logged in
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotLoggedIn'
+  /users/userdetails:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Get user details
+      requestBody:
+        description: Object with user ID or email
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailOrIdObject'
+      description: Get user details
+      operationId: getUserDetails
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User details retrieved
+                  data:
+                    $ref: '#/components/schemas/UserSchema'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Please provide an email or an ID
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: User not found
+  /users/searchbyname:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      summary: Search users by name
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          required: false
+          description: Page number
+        - in: query
+          name: perpage
+          schema:
+            type: integer
+            example: 10
+          required: false
+          description: Number of results per page
+      requestBody:
+        description: Object with user name
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NameObject'
+      description: Search users by name
+      operationId: searchByName
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  results:
+                    type: number
+                    example: Number of users retrieved
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserSchema'
+                  pagination:
+                    $ref: '#/components/schemas/PaginationResultObect'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Please provide a valid name
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotLoggedIn'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: User not found
   /users/permissions:
     get:
       tags:
@@ -742,6 +879,62 @@ components:
                   items:
                     type: string
                     example: role1
+    EmailOrIdObject:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@user.com
+        id:
+          type: string
+          example: 5f26346f23c43723c43723c4
+    NameObject:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John
+    PaginationResultObect:
+      type: object
+      properties:
+        totalCount:
+          type: number
+          example: 100
+        totalPages:
+          type: number
+          example: 10
+        currentPage:
+          type: number
+          example: 1
+    UserSchema:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: 5f26346f23c43723c43723c4
+            name:
+              type: string
+              example: John
+            email:
+              type: string
+              example: user@user.com
+            role:
+              type: string
+              example: user
+            permissions:
+              type: array
+              items:
+                type: string
+                example: permission1
+            passwordChangedAt:
+              type: string
+              example: 2024-07-08T17:04:33.270Z
+            __v:
+              type: integer
+              example: 0
   securitySchemes:
     bearerAuth:
       type: http

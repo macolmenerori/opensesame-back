@@ -6,6 +6,8 @@ import {
   getAllUsers,
   getPermissions,
   getRoles,
+  getUserByName,
+  getUserDetails,
   isLoggedIn,
   logIn,
   logOut,
@@ -24,7 +26,8 @@ import {
   signUpValidation,
   updatePermissionsValidation,
   updateRolesValidation,
-  validateEmailOrId
+  validateEmailOrId,
+  validateName
 } from '../validations/userValidation';
 
 const router = express.Router();
@@ -66,6 +69,14 @@ router
 router
   .route('/allusers')
   .get(protect, getAllUsers)
+  .all(methodNotAllowed(['GET']));
+router
+  .route('/userdetails')
+  .get(protect, validateEmailOrId, getUserDetails)
+  .all(methodNotAllowed(['GET']));
+router
+  .route('/searchbyname')
+  .get(protect, validateName, getUserByName)
   .all(methodNotAllowed(['GET']));
 router
   .route('/delete')
