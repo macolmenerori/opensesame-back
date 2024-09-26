@@ -228,7 +228,8 @@ export const isLoggedIn = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getRoles = catchAsync(async (req: Request, res: Response) => {
-  const { email, id } = req.body;
+  const email = req.query.email as string;
+  const id = req.query.id as string;
 
   checkValidation(req, res);
 
@@ -315,7 +316,8 @@ export const updatePermissions = catchAsync(async (req: Request, res: Response) 
 });
 
 export const getPermissions = catchAsync(async (req: Request, res: Response) => {
-  const { email, id } = req.body;
+  const email = req.query.email as string;
+  const id = req.query.id as string;
 
   checkValidation(req, res);
 
@@ -414,7 +416,8 @@ export const updateRoles = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const removeUser = catchAsync(async (req: Request, res: Response) => {
-  const { email, id } = req.body;
+  const email = req.query.email as string;
+  const id = req.query.id as string;
 
   checkValidation(req, res);
 
@@ -552,7 +555,8 @@ export const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getUserDetails = catchAsync(async (req: Request, res: Response) => {
-  const { email, id } = req.body;
+  const email = req.query.email as string;
+  const id = req.query.id as string;
 
   checkValidation(req, res);
 
@@ -588,11 +592,19 @@ export const getUserDetails = catchAsync(async (req: Request, res: Response) => 
 });
 
 export const getUserByName = catchAsync(async (req: Request, res: Response) => {
-  const { name } = req.body;
+  const name = req.query.name as string;
   const page = Number(req.query.page) || 1;
   const perpage = Number(req.query.perpage) || 10;
 
   checkValidation(req, res);
+
+  // Check name is not missing
+  if (!name) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Please provide a name'
+    });
+  }
 
   // Calculate the number of users to skip
   const skip = (page - 1) * perpage;
