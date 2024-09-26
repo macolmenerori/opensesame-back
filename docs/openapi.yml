@@ -322,6 +322,21 @@ paths:
         - cookieAuth: []
       summary: Get all roles of a user
       description: Get all roles of a user
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            example: user@user.com
+          required: false
+          description: User email
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 0939476756
+          required: false
+          description: User ID
       operationId: getRoles
       responses:
         200:
@@ -502,12 +517,21 @@ paths:
         - bearerAuth: []
         - cookieAuth: []
       summary: Get user details
-      requestBody:
-        description: Object with user ID or email
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmailOrIdObject'
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            example: user@user.com
+          required: false
+          description: User email
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 0939476756
+          required: false
+          description: User ID
       description: Get user details
       operationId: getUserDetails
       responses:
@@ -568,6 +592,20 @@ paths:
       summary: Search users by name
       parameters:
         - in: query
+          name: email
+          schema:
+            type: string
+            example: user@user.com
+          required: false
+          description: User email
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 0939476756
+          required: false
+          description: User ID
+        - in: query
           name: page
           schema:
             type: integer
@@ -581,12 +619,6 @@ paths:
             example: 10
           required: false
           description: Number of results per page
-      requestBody:
-        description: Object with user name
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NameObject'
       description: Search users by name
       operationId: searchByName
       responses:
@@ -650,6 +682,21 @@ paths:
         - cookieAuth: []
       summary: Get all permissions of a user
       description: Get all permissions of a user
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            example: user@user.com
+          required: false
+          description: User email
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 0939476756
+          required: false
+          description: User ID
       operationId: getPermissions
       responses:
         200:
@@ -672,7 +719,7 @@ paths:
                         type: array
                         items:
                           type: string
-                          example: role1
+                          example: permission1
         401:
           description: Not logged in
           content:
@@ -751,16 +798,21 @@ paths:
       summary: Delete user
       description: This can only be done by logged in admins
       operationId: deleteUser
-      requestBody:
-        description: Delete user object
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: user@user.com
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            example: user@user.com
+          required: false
+          description: User email
+        - in: query
+          name: id
+          schema:
+            type: string
+            example: 0939476756
+          required: false
+          description: User ID
       responses:
         204:
           description: Successful operation

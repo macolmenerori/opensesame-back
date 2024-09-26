@@ -1,4 +1,4 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, query, ValidationChain } from 'express-validator';
 
 export const signUpValidation: ValidationChain[] = [
   body('name')
@@ -122,12 +122,12 @@ export const changeUserPasswordValidation: ValidationChain[] = [
 ];
 
 export const validateEmailOrId: ValidationChain[] = [
-  body('email').optional().isEmail().withMessage('Email must be valid'),
-  body('id').optional().isString().withMessage('ID must be a string')
+  query('email').optional().isEmail().withMessage('Email must be valid'),
+  query('id').optional().isString().withMessage('ID must be a string')
 ];
 
 export const validateName: ValidationChain[] = [
-  body('name')
+  query('name')
     .optional()
     .isString()
     .withMessage('Name must be a string')
