@@ -63,6 +63,7 @@
   },
   "resolutions": {
     "glob": "^11.0.0",
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "cookie": "^0.7.1"
   }
 }
