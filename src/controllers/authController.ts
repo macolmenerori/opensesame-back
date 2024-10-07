@@ -160,7 +160,10 @@ const checkValidation = (req: Request, res: Response) => {
 };
 
 export const signUp = catchAsync(async (req: Request, res: Response) => {
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Create user
   const newUser = await User.create(req.body);
@@ -180,7 +183,10 @@ export const signUp = catchAsync(async (req: Request, res: Response) => {
 export const logIn = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // 1) Check if email and password exist
   if (!email || !password) {
@@ -231,7 +237,10 @@ export const getRoles = catchAsync(async (req: Request, res: Response) => {
   const email = req.query.email as string;
   const id = req.query.id as string;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -269,7 +278,10 @@ export const getRoles = catchAsync(async (req: Request, res: Response) => {
 export const updatePermissions = catchAsync(async (req: Request, res: Response) => {
   const { email, id, permissions } = req.body;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -319,7 +331,10 @@ export const getPermissions = catchAsync(async (req: Request, res: Response) => 
   const email = req.query.email as string;
   const id = req.query.id as string;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -360,7 +375,10 @@ export const getPermissions = catchAsync(async (req: Request, res: Response) => 
 export const updateRoles = catchAsync(async (req: Request, res: Response) => {
   const { email, id, role } = req.body;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -419,7 +437,10 @@ export const removeUser = catchAsync(async (req: Request, res: Response) => {
   const email = req.query.email as string;
   const id = req.query.id as string;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -454,7 +475,10 @@ export const removeUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const changePassword = catchAsync(async (req: Request, res: Response) => {
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Get the logged in user
   const user = (await User.findById(req.user?.id).select('+password')) as UserSchemaType;
@@ -491,7 +515,10 @@ export const changePassword = catchAsync(async (req: Request, res: Response) => 
 export const changeUserPassword = catchAsync(async (req: Request, res: Response) => {
   const { email, id } = req.body;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -558,7 +585,10 @@ export const getUserDetails = catchAsync(async (req: Request, res: Response) => 
   const email = req.query.email as string;
   const id = req.query.id as string;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check that at least one exists
   if (!email && !id) {
@@ -596,7 +626,10 @@ export const getUserByName = catchAsync(async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1;
   const perpage = Number(req.query.perpage) || 10;
 
-  checkValidation(req, res);
+  const validation = checkValidation(req, res);
+  if (validation !== undefined) {
+    return validation;
+  }
 
   // Check name is not missing
   if (!name) {
