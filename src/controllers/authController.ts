@@ -6,6 +6,7 @@ import { promisify } from 'util';
 import User from '../models/userModel';
 import { UserRoles, UserSchemaType, UserType } from '../models/userTypes';
 import catchAsync from '../utils/catchAsync';
+import { escapeRegExp } from '../utils/consts';
 
 type Request = RequestExpress & {
   user?: UserType;
@@ -639,11 +640,14 @@ export const getUserByName = catchAsync(async (req: Request, res: Response) => {
     });
   }
 
+  // Sanitize the name to prevent ReDoS by escaping special characters
+  const sanitizedInput = escapeRegExp(name);
+
   // Calculate the number of users to skip
   const skip = (page - 1) * perpage;
 
   // Use a regular expression for case-insensitive search
-  const nameRegex = new RegExp(name, 'i');
+  const nameRegex = new RegExp(sanitizedInput, 'i');
 
   const users = (await User.find({ name: { $regex: nameRegex } })
     .skip(skip)
