@@ -3,7 +3,8 @@ LABEL app="mywebpage" stack.binary="node" stack.version="20-alpine"
 
 WORKDIR /usr/app
 
-COPY config.env ./
+# Dockerfile config.env* means that if no config.env file is present, Dockerfile will be copied instead
+COPY Dockerfile config.env* ./
 COPY src src
 COPY package.json ./
 COPY yarn.lock ./
