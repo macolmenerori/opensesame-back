@@ -16,6 +16,7 @@ type CookieOptionsType = {
   expires: Date;
   httpOnly: boolean;
   secure?: boolean;
+  sameSite?: 'strict' | 'lax' | 'none';
 };
 
 type DecodedJwt = JwtPayload & {
@@ -78,7 +79,8 @@ const signAndSendToken = (
       expires: new Date(
         Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRES_IN!) * 24 * 60 * 60 * 1000
       ),
-      httpOnly: true
+      httpOnly: true,
+      sameSite: 'none'
     };
 
     if (req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
