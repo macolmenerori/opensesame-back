@@ -220,7 +220,8 @@ export const logIn = catchAsync(async (req: Request, res: Response) => {
 export const logOut = (req: Request, res: Response) => {
   const cookieOptions: CookieOptionsType = {
     expires: new Date(Date.now() + 10 * 1000), // 10 seconds
-    httpOnly: true
+    httpOnly: true,
+    sameSite: 'none'
   };
 
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
