@@ -658,7 +658,7 @@ export const getUserByName = catchAsync(async (req: Request, res: Response) => {
 
   const users = (await User.find({ name: { $regex: nameRegex } })
     .skip(skip)
-    .limit(perpage)) as UserSchemaType[];
+    .limit(perpage)) as unknown as UserSchemaType[];
 
   const totalCount = await User.countDocuments({ name: { $regex: nameRegex } });
 
