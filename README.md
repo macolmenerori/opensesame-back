@@ -7,7 +7,7 @@ Manage users and assign them roles and permissions to perform certain actions.
 ## Requirements
 
 - MongoDB database set up and running ([MongoDB Atlas](https://www.mongodb.com/atlas) recommended)
-- [Node JS](https://nodejs.org/en) `>=20`
+- [Node JS](https://nodejs.org/en) `>=22.11.0`
 - [yarn](https://yarnpkg.com/getting-started/install) `>=1.22`
 
 ## API Documentation
