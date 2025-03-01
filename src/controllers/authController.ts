@@ -1,6 +1,6 @@
 import type { NextFunction, Request as RequestExpress, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { JwtPayload, sign, verify, VerifyOptions } from 'jsonwebtoken';
+import { JwtPayload, sign, SignOptions, verify, VerifyOptions } from 'jsonwebtoken';
 import { promisify } from 'util';
 
 import User from '../models/userModel';
@@ -30,10 +30,11 @@ type DecodedJwt = JwtPayload & {
  * @returns {string} - The signed token
  */
 const signToken = (id: string): string => {
-  return sign({ id: id }, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  const options: SignOptions = {
+    expiresIn: Number(process.env.JWT_EXPIRES_IN),
     algorithm: 'HS256'
-  });
+  };
+  return sign({ id: id }, process.env.JWT_SECRET!, options);
 };
 
 const verifyAsync = promisify<string, string | Buffer, VerifyOptions | undefined, DecodedJwt>(
