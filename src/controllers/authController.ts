@@ -57,6 +57,17 @@ const verifyToken = async (token: string): Promise<DecodedJwt | null> => {
 };
 
 /**
+ * Detects if the request is from Safari browser
+ *
+ * @param {Request} req - The request object
+ * @returns {boolean} - True if Safari, false otherwise
+ */
+const isSafari = (req: Request): boolean => {
+  const userAgent = req.headers['user-agent'] || '';
+  return /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+};
+
+/**
  * Signs a token and sends it back to the client
  *
  * @param {UserType} user - The user object to sign the token for
@@ -84,8 +95,13 @@ const signAndSendToken = (
     };
 
     if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+      // HTTPS - use secure cookies with sameSite none for cross-origin
       cookieOptions.secure = true;
       cookieOptions.sameSite = 'none';
+    } else {
+      // HTTP (development) - use lax for Safari compatibility
+      cookieOptions.secure = false;
+      cookieOptions.sameSite = 'lax';
     }
 
     res.cookie('jwt', token, cookieOptions);
@@ -213,7 +229,8 @@ export const logIn = catchAsync(async (req: Request, res: Response) => {
   }
 
   // 3) If everything ok, send token to client
-  if (req.headers.authorizationtype && req.headers.authorizationtype === 'bearer') {
+  // Use Bearer tokens for Safari (due to ITP restrictions) or if explicitly requested
+  if (req.headers.authorizationtype === 'bearer' || isSafari(req)) {
     signAndSendToken(user, 200, 'bearer', req, res);
   } else {
     signAndSendToken(user, 200, 'cookie', req, res);
@@ -227,8 +244,13 @@ export const logOut = (req: Request, res: Response) => {
   };
 
   if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+    // HTTPS - use secure cookies with sameSite none for cross-origin
     cookieOptions.secure = true;
     cookieOptions.sameSite = 'none';
+  } else {
+    // HTTP (development) - use lax for Safari compatibility
+    cookieOptions.secure = false;
+    cookieOptions.sameSite = 'lax';
   }
 
   res.cookie('jwt', 'loggedout', cookieOptions);
@@ -513,8 +535,8 @@ export const changePassword = catchAsync(async (req: Request, res: Response) => 
   user.passwordConfirm = req.body.newPasswordConfirm;
   await user.save();
 
-  // Update user JWT
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  // Update user JWT - use Bearer for Safari or if explicitly requested
+  if (req.headers.authorization?.startsWith('Bearer') || isSafari(req)) {
     signAndSendToken(user, 200, 'bearer', req, res);
   } else {
     signAndSendToken(user, 200, 'cookie', req, res);
