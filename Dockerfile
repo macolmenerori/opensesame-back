@@ -1,5 +1,5 @@
-FROM node:22-alpine
-LABEL app="opensesame-back" stack.binary="node" stack.version="22-alpine"
+FROM node:24-alpine
+LABEL app="opensesame-back" stack.binary="node" stack.version="24-alpine"
 
 WORKDIR /usr/app
 
