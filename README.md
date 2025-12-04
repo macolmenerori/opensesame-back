@@ -8,7 +8,7 @@ Manage users and assign them roles and permissions to perform certain actions.
 
 - MongoDB database set up and running ([MongoDB Atlas](https://www.mongodb.com/atlas) recommended)
 - [Node JS](https://nodejs.org/en) `>=24.0.0`
-- [yarn](https://yarnpkg.com/getting-started/install) `>=1.22`
+- [pnpm](https://pnpm.io/installation)
 
 ## API Documentation
 
@@ -18,7 +18,7 @@ The API documentation can be found in openAPI format under `docs/openapi.yml`
 
 Easiest way to set up the project to use it right away.
 
-### Requirements:
+### Requirements
 
 - [Docker](https://www.docker.com/) installed and running
 - MongoDB database set up and running ([MongoDB Atlas](https://www.mongodb.com/atlas) recommended)
@@ -42,17 +42,17 @@ docker run -p 8080:8080 --name opensesame-back opensesame-back
 
 For feature-testing and development.
 
-### Requirements:
+### Requirements
 
 - Node JS
-- yarn
+- pnpm
 - MongoDB database set up and running
 
 ### Steps
 
 1. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
-2. Install packages `yarn install`
-3. Run the dev environment `yarn dev`
+2. Install packages `pnpm i`
+3. Run the dev environment `pnpm dev`
 
 ## Configuration
 

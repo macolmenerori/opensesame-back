@@ -83,7 +83,7 @@ const signAndSendToken = (
   req: Request,
   res: Response
 ) => {
-  const token = signToken(user._id as string);
+  const token = signToken(user._id as unknown as string);
 
   if (tokenType === 'cookie') {
     // Set cookie for browser

@@ -7,18 +7,18 @@ WORKDIR /usr/app
 COPY Dockerfile config.env* ./
 COPY src src
 COPY package.json ./
-COPY yarn.lock ./
+COPY pnpm-lock.yaml ./
 COPY .eslintignore ./
 COPY .eslintrc.js ./
 COPY .npmrc ./
 COPY .prettierrc ./
 COPY tsconfig.json ./
 
-RUN yarn install --frozen-lockfile
-RUN yarn build
+RUN pnpm i --frozen-lockfile
+RUN pnpm build
 
 EXPOSE 8080
 
 HEALTHCHECK --interval=120s --retries=2 --start-period=5m --timeout=30s CMD wget -q -O- http://localhost:8080/healthcheck || exit 1
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
