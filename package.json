@@ -11,7 +11,7 @@
     "lint": "eslint --fix .",
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "verify": "yarn audit --groups dependencies && yarn lint && yarn prettify && yarn types && yarn build",
+    "verify": "pnpm audit --prod && pnpm lint && pnpm prettify && pnpm types && pnpm build",
     "gitleaks": "sh scripts/gitleaks"
   },
   "author": "macolmenerori",
@@ -20,7 +20,7 @@
     "url": "https://github.com/macolmenerori/opensesame-back"
   },
   "license": "MIT",
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -65,9 +65,11 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
-  "resolutions": {
-    "glob": "^11.0.0",
-    "micromatch": "^4.0.8",
-    "cookie": "^0.7.1"
+  "pnpm": {
+    "overrides": {
+      "glob": "^11.0.0",
+      "micromatch": "^4.0.8",
+      "cookie": "^0.7.1"
+    }
   }
 }

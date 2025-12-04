@@ -1,2 +1,2 @@
-yarn gitleaks
-yarn lint
+pnpm gitleaks
+pnpm lint

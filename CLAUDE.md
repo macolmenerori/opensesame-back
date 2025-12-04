@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-- `yarn dev` - Start development server with hot reload using nodemon
-- `yarn build` - Compile TypeScript to JavaScript in `dist/` directory
-- `yarn start` - Start production server from compiled `dist/server.js`
-- `yarn lint` - Run ESLint with auto-fix
-- `yarn prettify` - Format code with Prettier
-- `yarn types` - Run TypeScript type checking without emitting files
-- `yarn verify` - Run full verification pipeline: audit, lint, prettify, types, and build
-- `yarn gitleaks` - Run security scan using gitleaks script
+- `pnpm dev` - Start development server with hot reload using nodemon
+- `pnpm build` - Compile TypeScript to JavaScript in `dist/` directory
+- `pnpm start` - Start production server from compiled `dist/server.js`
+- `pnpm lint` - Run ESLint with auto-fix
+- `pnpm prettify` - Format code with Prettier
+- `pnpm types` - Run TypeScript type checking without emitting files
+- `pnpm verify` - Run full verification pipeline: audit, lint, prettify, types, and build
+- `pnpm gitleaks` - Run security scan using gitleaks script
 
 ## Architecture Overview
 
@@ -50,5 +50,5 @@ OpenAPI specification available at `docs/openapi.yml`
 ### Build System
 - TypeScript compilation to CommonJS
 - Output to `dist/` directory
-- Node.js >=22.11.0 required
-- Yarn package manager
+- Node.js >=24.0.0 required
+- pnpm package manager (v10.24.0)

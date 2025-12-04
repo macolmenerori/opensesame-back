@@ -2,9 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: ['master']
+    branches: ["master"]
   pull_request:
-    branches: ['master']
+    branches: ["master"]
 
 env:
   NODE_ENV: ${{ vars.NODE_ENV }}
@@ -25,13 +25,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 'lts/Krypton'
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+          node-version: "lts/Krypton"
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm build
       - run: |
-          yarn start &
+          pnpm start &
           sleep 10
       - run: curl http://localhost:${{ env.PORT }}/healthcheck | grep running
