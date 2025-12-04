@@ -1,24 +1,31 @@
-FROM node:24-alpine
-LABEL app="opensesame-back" stack.binary="node" stack.version="24-alpine"
+FROM node:24-alpine AS base
 
-WORKDIR /usr/app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV CI=true
+RUN corepack enable
 
-# Dockerfile config.env* means that if no config.env file is present, Dockerfile will be copied instead
-COPY Dockerfile config.env* ./
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+COPY config.env ./
 COPY src src
-COPY package.json ./
-COPY pnpm-lock.yaml ./
 COPY .eslintignore ./
 COPY .eslintrc.js ./
 COPY .npmrc ./
 COPY .prettierrc ./
 COPY tsconfig.json ./
+RUN pnpm run build
 
-RUN pnpm i --frozen-lockfile
-RUN pnpm build
-
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY config.env ./
 EXPOSE 8080
-
 HEALTHCHECK --interval=120s --retries=2 --start-period=5m --timeout=30s CMD wget -q -O- http://localhost:8080/healthcheck || exit 1
-
-CMD ["pnpm", "start"]
+CMD [ "pnpm", "start" ]
