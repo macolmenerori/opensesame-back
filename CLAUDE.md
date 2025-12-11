@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is a Node.js/Express authentication API built with TypeScript and MongoDB.
+This is a Node.js/Express 5 authentication API built with TypeScript and MongoDB.
 
 ### Core Structure
 - **Entry Point**: `src/server.ts` - Handles database connection, environment setup, and server startup
@@ -52,3 +52,8 @@ OpenAPI specification available at `docs/openapi.yml`
 - Output to `dist/` directory
 - Node.js >=24.0.0 required
 - pnpm package manager (v10.24.0)
+
+### Express 5 Notes
+- Uses `@exortek/express-mongo-sanitize` (Express 5 compatible fork of express-mongo-sanitize)
+- Wildcard routes use named parameters: `'{*path}'` instead of `'*'`
+- `req.query` is read-only (getter only)

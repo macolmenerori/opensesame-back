@@ -1,8 +1,8 @@
+import mongoSanitize from '@exortek/express-mongo-sanitize';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import mongoSanitize from 'express-mongo-sanitize';
 import { rateLimit } from 'express-rate-limit';
 import helmet from 'helmet';
 
@@ -31,7 +31,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Handle preflight requests for complex requests (e.g., with credentials)
-app.options('*', cors(corsOptions));
+app.options('{*path}', cors(corsOptions));
 
 // Add security HTTP headers
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -58,7 +58,7 @@ app.use(cookieParser()); // Parse cookies
 app.use(mongoSanitize());
 
 // Compress responses
-app.use(compression());
+app.use(compression() as express.RequestHandler);
 
 app.get('/healthcheck', (req, res) => {
   res.status(200).json({
@@ -70,7 +70,7 @@ app.get('/healthcheck', (req, res) => {
 app.use('/api/v1/users', userRouter);
 
 // Middleware for handling unhandled routes
-app.all('*', (req, res) => {
+app.all('{*path}', (req, res) => {
   return res.status(404).json({
     status: 'fail',
     message: `Can't find ${req.originalUrl} on this server`
