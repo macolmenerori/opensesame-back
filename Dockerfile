@@ -17,7 +17,6 @@ COPY config.env ./
 COPY src src
 COPY .eslintignore ./
 COPY .eslintrc.js ./
-COPY .npmrc ./
 COPY .prettierrc ./
 COPY tsconfig.json ./
 RUN pnpm run build
