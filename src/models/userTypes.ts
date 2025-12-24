@@ -4,6 +4,7 @@ import { Document, Schema } from 'mongoose';
 export type UserRoles = 'admin' | 'user';
 
 export type UserType = Document & {
+  id: string; // Virtual property for string representation of _id
   name: string;
   email: string;
   role: UserRoles;
