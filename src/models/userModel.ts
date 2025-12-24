@@ -47,23 +47,21 @@ const userSchema: Schema = new mongoose.Schema({
 });
 
 // Middleware to hash password before saving it to the database
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
-    return next();
+    return;
   }
   this.password = await hash(this.password as string, 12);
   this.passwordConfirm = undefined;
   this.passwordChangedAt = Date.now() - 1000;
-  next();
 });
 
 // Middleware to update the passwordChangedAt field when the password is changed
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function () {
   if (!this.isModified('password') || this.isNew) {
-    return next();
+    return;
   }
   this.passwordChangedAt = Date.now() - 1000; // One second less to ensure the token has been created after the password was changed
-  next();
 });
 
 // Method to check if the password is correct
