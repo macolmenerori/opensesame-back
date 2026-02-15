@@ -37,7 +37,7 @@ docker network create opensesame-network
 1. Run the Docker image
 
 ```
-docker run -p 8080:8080 --name opensesame-back opensesame-back
+docker run --network opensesame-network -p 8080:8080 --name opensesame-back opensesame-back
 ```
 
 ## How to set up and run (Native)
