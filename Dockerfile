@@ -15,8 +15,7 @@ FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY config.env ./
 COPY src src
-COPY .eslintignore ./
-COPY .eslintrc.js ./
+COPY eslint.config.mjs eslint.config.mjs
 COPY .prettierrc ./
 COPY tsconfig.json ./
 RUN pnpm run build

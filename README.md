@@ -26,13 +26,15 @@ Easiest way to set up the project to use it right away.
 ### Steps
 
 1. Edit the file `config.env.example` with all the parameters, then rename it to `config.env`
-2. Generate the Docker image
+2. Generate the Docker image and create a network
 
 ```
 docker build -t opensesame-back:latest .
+
+docker network create opensesame-network
 ```
 
-3. Run the Docker image
+1. Run the Docker image
 
 ```
 docker run -p 8080:8080 --name opensesame-back opensesame-back
