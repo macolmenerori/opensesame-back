@@ -51,7 +51,7 @@ const verifyToken = async (token: string): Promise<DecodedJwt | null> => {
   try {
     const decoded = (await verifyAsync(token, process.env.JWT_SECRET as string, {})) as DecodedJwt;
     return decoded;
-  } catch (err) {
+  } catch {
     return null;
   }
 };
