@@ -1,0 +1,24 @@
+FROM node:24-alpine AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV CI=true
+RUN corepack enable && apk add --no-cache git
+
+WORKDIR /app
+RUN git clone https://github.com/macolmenerori/opensesame-front.git .
+
+# Generate .env with build-time URLs (browser-facing, must use localhost)
+ARG NODE_ENV=production
+ARG BASE_URL_API=http://localhost:8080/api
+RUN printf "NODE_ENV=%s\nBASE_URL_API=%s\n" \
+  "$NODE_ENV" "$BASE_URL_API" > .env
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
