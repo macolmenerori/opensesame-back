@@ -11,6 +11,6 @@
     "strict": true,
     "target": "ES6"
   },
-  "exclude": ["node_modules", "dist", "*.mjs"],
+  "exclude": ["node_modules", "dist", "*.mjs", "docker"],
   "types": ["node"]
 }
