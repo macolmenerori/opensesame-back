@@ -1,0 +1,45 @@
+FROM node:24-alpine AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV CI=true
+RUN corepack enable && apk add --no-cache git
+
+WORKDIR /app
+RUN git clone https://github.com/macolmenerori/opensesame-back.git .
+
+# Generate config.env from build args
+ARG NODE_ENV=production
+ARG PORT=8080
+ARG DB_NAME=opensesame
+ARG DATABASE
+ARG PASSWORD_HASH_DIFFICULTY=12
+ARG JWT_SECRET
+ARG JWT_EXPIRES_IN=604800
+ARG JWT_COOKIE_EXPIRES_IN=7
+ARG RATELIMIT_MAXCONNECTIONS=100
+ARG RATELIMIT_WINDOWMS=3600000
+ARG CORS_WHITELIST
+RUN printf "NODE_ENV=%s\nPORT=%s\nDB_NAME=%s\nDATABASE=%s\nPASSWORD_HASH_DIFFICULTY=%s\nJWT_SECRET=%s\nJWT_EXPIRES_IN=%s\nJWT_COOKIE_EXPIRES_IN=%s\nRATELIMIT_MAXCONNECTIONS=%s\nRATELIMIT_WINDOWMS=%s\nCORS_WHITELIST=%s\n" \
+  "$NODE_ENV" "$PORT" "$DB_NAME" "$DATABASE" "$PASSWORD_HASH_DIFFICULTY" "$JWT_SECRET" "$JWT_EXPIRES_IN" "$JWT_COOKIE_EXPIRES_IN" "$RATELIMIT_MAXCONNECTIONS" "$RATELIMIT_WINDOWMS" "$CORS_WHITELIST" > config.env
+
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm run build
+
+FROM node:24-alpine
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV CI=true
+RUN corepack enable
+WORKDIR /app
+COPY --from=base /app/package.json /app/pnpm-lock.yaml ./
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=base /app/config.env ./
+EXPOSE 8080
+HEALTHCHECK --interval=120s --retries=2 --start-period=5m --timeout=30s CMD wget -q -O- http://localhost:8080/healthcheck || exit 1
+CMD ["pnpm", "start"]

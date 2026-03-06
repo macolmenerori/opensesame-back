@@ -1,0 +1,47 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mongo
+    container_name: opensesame-db
+    ports:
+      - "27017:27017"
+
+  opensesame-back:
+    build:
+      context: .
+      dockerfile: Dockerfile.opensesame
+      args:
+        DATABASE: mongodb://admindb:admindb@db:27017/opensesame?authSource=admin
+        JWT_SECRET: jc2TNsWyaM3DdKkhurJL8QGzCvX9BfUY
+        CORS_WHITELIST: "http://localhost,http://opensesame-front,http://localhost:80"
+    container_name: opensesame-back
+    environment:
+      NODE_ENV: production
+      PORT: 8080
+      DB_NAME: opensesame
+      DATABASE: mongodb://admindb:admindb@db:27017/opensesame?authSource=admin
+      PASSWORD_HASH_DIFFICULTY: 12
+      JWT_SECRET: jc2TNsWyaM3DdKkhurJL8QGzCvX9BfUY
+      JWT_EXPIRES_IN: 604800
+      JWT_COOKIE_EXPIRES_IN: 7
+      RATELIMIT_MAXCONNECTIONS: 100
+      RATELIMIT_WINDOWMS: 3600000
+      CORS_WHITELIST: "http://localhost,http://opensesame-front,http://localhost:80"
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  opensesame-front:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+      args:
+        BASE_URL_API: http://localhost:8080/api
+    container_name: opensesame-front
+    depends_on:
+      - db
+      - opensesame-back
+    ports:
+      - "80:80"
