@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@exortek/express-mongo-sanitize':
-        specifier: ^2.0.1
-        version: 2.0.1(express@5.2.1)
+        specifier: ^2.0.2
+        version: 2.0.2(express@5.2.1)
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -157,8 +157,8 @@ packages:
     resolution: {integrity: sha512-iH1B076HoAshH1mLpHMgwdGeTs0CYwL0SPMkGuSebZrwBp16v415e9NZXg2jtrqPVQjf6IANe2Vtlr5KswtcZQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@exortek/express-mongo-sanitize@2.0.1':
-    resolution: {integrity: sha512-pbHrSrJTlXFhuxHpiWiMeAxfn3I7RvyS/K8hhj91LU3TiXZn3nH/sj9yRckfRuyv7/nxgKzzUmZ5ZLPgXLEy9w==}
+  '@exortek/express-mongo-sanitize@2.0.2':
+    resolution: {integrity: sha512-BjLTzOqd65DoaZuLCHEje3EPpT0HNwvsGzbWTXRt6EqoLfUGvIyD3698Z+ZwrLkw0WZhBTuQxZCO3iqjfA+Fiw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       express: '>=4.0.0'
@@ -1272,7 +1272,7 @@ snapshots:
       '@eslint/core': 1.1.1
       levn: 0.4.1
 
-  '@exortek/express-mongo-sanitize@2.0.1(express@5.2.1)':
+  '@exortek/express-mongo-sanitize@2.0.2(express@5.2.1)':
     dependencies:
       '@exortek/nosql-sanitize-core': 2.0.1
       express: 5.2.1
