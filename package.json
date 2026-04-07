@@ -12,7 +12,7 @@
     "types": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
     "verify": "pnpm audit --prod && pnpm lint && pnpm prettify && pnpm types && pnpm build",
-    "gitleaks": "sh scripts/gitleaks"
+    "gitleaks": "sh scripts/gitleaks.sh"
   },
   "author": "macolmenerori",
   "repository": {
@@ -20,7 +20,7 @@
     "url": "https://github.com/macolmenerori/opensesame-back"
   },
   "license": "MIT",
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -52,7 +52,7 @@
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "nodemon": "^3.1.14",
@@ -62,8 +62,6 @@
     "typescript-eslint": "^8.58.0"
   },
   "pnpm": {
-    "overrides": {
-      "qs": "6.15.0"
-    }
+    "overrides": {}
   }
 }
