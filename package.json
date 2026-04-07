@@ -62,8 +62,6 @@
     "typescript-eslint": "^8.58.0"
   },
   "pnpm": {
-    "overrides": {
-      "path-to-regexp": "0.1.13"
-    }
+    "overrides": {}
   }
 }
