@@ -1,4 +1,6 @@
 allowBuilds:
   bcrypt: true
+minimumReleaseAgeExclude:
+  - mongoose@9.7.2
 overrides:
   "qs": "6.15.2"
