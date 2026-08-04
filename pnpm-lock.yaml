@@ -34,7 +34,7 @@ importers:
         version: 5.2.1(supports-color@5.5.0)
       express-rate-limit:
         specifier: ^8.6.1
-        version: 8.6.1(express@5.2.1(supports-color@5.5.0))
+        version: 8.6.1(express@5.2.1(supports-color@5.5.0))(supports-color@5.5.0)
       express-validator:
         specifier: ^7.3.2
         version: 7.3.2
@@ -45,8 +45,8 @@ importers:
         specifier: ^9.0.3
         version: 9.0.3
       mongoose:
-        specifier: ^9.8.0
-        version: 9.8.0
+        specifier: ^9.9.1
+        version: 9.9.1
       validator:
         specifier: ^13.15.35
         version: 13.15.35
@@ -902,8 +902,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@9.8.0:
-    resolution: {integrity: sha512-PDGx3XACxrBQyWf4YT+5s1Xsx19x84UWGlRVIza4i9RG6qKjGcoG7odotT6uquR6YoaDMTZ6ZZc/jMXLrNPyyA==}
+  mongoose@9.9.1:
+    resolution: {integrity: sha512-hI00baDVPjV5VfYA3j+oLuPvLfmCQICWot9zJZgkuDMXnWEYhIx9xCPEOt2IC3lDJz6ajsz2bpgO24E+xsP6wg==}
     engines: {node: '>=20.19.0'}
 
   mpath@0.9.0:
@@ -1755,7 +1755,7 @@ snapshots:
 
   etag@1.8.1: {}
 
-  express-rate-limit@8.6.1(express@5.2.1(supports-color@5.5.0)):
+  express-rate-limit@8.6.1(express@5.2.1(supports-color@5.5.0))(supports-color@5.5.0):
     dependencies:
       debug: 4.4.3(supports-color@5.5.0)
       express: 5.2.1(supports-color@5.5.0)
@@ -2033,7 +2033,7 @@ snapshots:
       bson: 7.3.1
       mongodb-connection-string-url: 7.0.2
 
-  mongoose@9.8.0:
+  mongoose@9.9.1:
     dependencies:
       '@standard-schema/spec': 1.1.0
       kareem: 3.3.0
