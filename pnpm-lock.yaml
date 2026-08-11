@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@exortek/express-mongo-sanitize':
-        specifier: ^3.0.0
-        version: 3.0.0(express@5.2.1(supports-color@5.5.0))
+        specifier: ^3.0.1
+        version: 3.0.1(express@5.2.1(supports-color@5.5.0))
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -157,14 +157,14 @@ packages:
     resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@exortek/express-mongo-sanitize@3.0.0':
-    resolution: {integrity: sha512-gAYE7Wm41qrXyjRHCiV66m0mn45wmIjHJlzUpn4KWzYXAfDWDlYsEF7Bo3edhJ33HSgJVoZifVYq1wB7rcM0BA==}
+  '@exortek/express-mongo-sanitize@3.0.1':
+    resolution: {integrity: sha512-2bRWLz70U0JiUHDuC/EyLZ9Yc34mTgGnZVnZ+afwi6HawIL0IqVzQiBiCtNzrJNzBDwd6A8FCVYsVBvbJzkFNA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       express: '>=4.0.0'
 
-  '@exortek/nosql-sanitize-core@3.0.0':
-    resolution: {integrity: sha512-QimONWIvYzoFlCqsmbiXCtAaBbWGvzmGs7hPmTHVsXNtMtltFOz0Jco0938H8rIJq5Wxq1Wt00tR/vv2l5ieiA==}
+  '@exortek/nosql-sanitize-core@3.0.1':
+    resolution: {integrity: sha512-cyOXRnCIuMQFY7oTLgETHqfkZyKVL+zA8MVt1MsDzoIN3eEx0mMhgDFjMrb0Gbo/YSCTvXP0Ojp6B6EBZu5j2A==}
     engines: {node: '>=18.0.0'}
 
   '@humanfs/core@0.19.2':
@@ -1276,12 +1276,12 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@exortek/express-mongo-sanitize@3.0.0(express@5.2.1(supports-color@5.5.0))':
+  '@exortek/express-mongo-sanitize@3.0.1(express@5.2.1(supports-color@5.5.0))':
     dependencies:
-      '@exortek/nosql-sanitize-core': 3.0.0
+      '@exortek/nosql-sanitize-core': 3.0.1
       express: 5.2.1(supports-color@5.5.0)
 
-  '@exortek/nosql-sanitize-core@3.0.0': {}
+  '@exortek/nosql-sanitize-core@3.0.1': {}
 
   '@humanfs/core@0.19.2':
     dependencies:
