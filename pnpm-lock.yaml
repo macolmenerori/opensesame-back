@@ -171,8 +171,8 @@ importers:
   .:
     dependencies:
       '@exortek/express-mongo-sanitize':
-        specifier: ^3.0.1
-        version: 3.0.1(express@5.3.0(supports-color@5.5.0))
+        specifier: ^4.0.0
+        version: 4.0.0(express@5.3.0(supports-color@5.5.0))
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -325,15 +325,15 @@ packages:
     resolution: {integrity: sha512-IkO+/KEUvwbVpiURZg+P7zF74z5Jxe0UgJxVni+RtoHQ6IZieXaO02kmadomap/q+l6bc/jdPGGqTjhuZnuz1Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@exortek/express-mongo-sanitize@3.0.1':
-    resolution: {integrity: sha512-2bRWLz70U0JiUHDuC/EyLZ9Yc34mTgGnZVnZ+afwi6HawIL0IqVzQiBiCtNzrJNzBDwd6A8FCVYsVBvbJzkFNA==}
-    engines: {node: '>=18.0.0'}
+  '@exortek/express-mongo-sanitize@4.0.0':
+    resolution: {integrity: sha512-bqTe2yHOiCClXTnaP6QNl/NbCM7oaiosFIHSr8j42zTgJ4cuPTHhDsYFYFpWhfZK7qNsq0/N0rpPBjUgGJmZOw==}
+    engines: {node: '>=20.0.0'}
     peerDependencies:
       express: '>=4.0.0'
 
-  '@exortek/nosql-sanitize-core@3.0.1':
-    resolution: {integrity: sha512-cyOXRnCIuMQFY7oTLgETHqfkZyKVL+zA8MVt1MsDzoIN3eEx0mMhgDFjMrb0Gbo/YSCTvXP0Ojp6B6EBZu5j2A==}
-    engines: {node: '>=18.0.0'}
+  '@exortek/nosql-sanitize-core@4.0.0':
+    resolution: {integrity: sha512-2diUDwAu4WG7I1JYb76H/fuL0CZrHst5KWkZlVDIkevke149OGBaavpCTnSTwg+2XnLUb5Nrr8Ab8gf3KYKHbQ==}
+    engines: {node: '>=20.0.0'}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -1488,12 +1488,12 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@exortek/express-mongo-sanitize@3.0.1(express@5.3.0(supports-color@5.5.0))':
+  '@exortek/express-mongo-sanitize@4.0.0(express@5.3.0(supports-color@5.5.0))':
     dependencies:
-      '@exortek/nosql-sanitize-core': 3.0.1
+      '@exortek/nosql-sanitize-core': 4.0.0
       express: 5.3.0(supports-color@5.5.0)
 
-  '@exortek/nosql-sanitize-core@3.0.1': {}
+  '@exortek/nosql-sanitize-core@4.0.0': {}
 
   '@humanfs/core@0.19.2':
     dependencies:
